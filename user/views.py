@@ -15,9 +15,13 @@ class HelloAPI(views.APIView):
         test_message = {'title': "List of api routes",
                         'routes': [
                             "api/",
+                            "api/user/create",
                             "api/token",
                             "api/token/refresh",
-                            "api/user/create"
+                            "api/me",
+                            "api/documents",
+                            "api/documents"
+
                         ]}
         return Response(test_message, status=status.HTTP_200_OK)
 
