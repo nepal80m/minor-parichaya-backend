@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 
     'user',
     'document',
+    'share_link',
 ]
 
 
