@@ -22,14 +22,15 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('api/', include('user.urls')),
+    path('', include('drfpasswordless.urls')),
+    path('', include('user.urls')),
 
-    path('api/token/', jwt_views.TokenObtainPairView.as_view(),
-         name='token_obtain_pair'),
-    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(),
-         name='token_refresh'),
+    # path('api/token/', jwt_views.TokenObtainPairView.as_view(),
+    #  name='token_obtain_pair'),
+    # path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(),
+    #  name='token_refresh'),
 
-    path('api/document/', include('document.urls')),
+    # path('api/document/', include('document.urls')),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
