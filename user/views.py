@@ -6,10 +6,16 @@ from rest_framework import permissions
 from rest_framework import views, generics
 
 from user.serializers import UserSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 
 class HelloAPI(views.APIView):
+
     """Test api view"""
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, format=None):
         test_message = {'title': "List of api routes",
