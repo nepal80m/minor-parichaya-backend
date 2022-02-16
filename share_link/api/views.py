@@ -176,38 +176,47 @@ def download_document_wise_images(request, shared_document_id, encryption_key,):
     key_string = hashlib.sha256(encryption_key.encode())
     byte_key = key_string.digest()
 
-    zip_buffer = io.BytesIO()
-    with zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
+    tmpdir = tempfile.mkdtemp()
+    zip_fn = os.path.join(tmpdir, f'{shared_document.title}.zip')
+
+    with zipfile.ZipFile(zip_fn, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
         for shared_document_image in shared_document.images.all():
             f = shared_document_image.image
             ef = EncryptedFile(f, key=byte_key)
 
             zip_file.writestr(shared_document_image.filename, ef.read())
 
-        # for file_name, data in [('1.txt', io.BytesIO(b'111')), ('2.txt', io.BytesIO(b'222'))]:
-        #     zip_file.writestr(file_name, data.getvalue())
+    zip_file = open(zip_fn, 'rb', )
+    return FileResponse(zip_file)
 
-    # for shared_document_image in shared_document.images.all():
-    #     f = shared_document_image.image
 
-    #     ef = EncryptedFile(f, key=byte_key)
-    #     print(ef)
+def download_all_share_link_images(request, share_link_id, encryption_key,):
 
-    #     wrapper = FileWrapper(ef)
+    share_link = get_object_or_404(
+        ShareLink, pk=share_link_id)
 
-    #     print(shared_document_image.filename)
-    #     archive.writestr(shared_document_image.filename, ef.read())
+    is_key_correct = pbkdf2_sha256.verify(
+        encryption_key, share_link.encryption_key_hash)
 
-    # content_type = mimetypes.guess_type(
-    #     shared_document_image.filename)[0]
-    for i in zip_file.infolist():
-        print(i.filename, i.file_size)
-    response = HttpResponse(
-        zip_file, content_type="application/x-zip-compressed")
-    response['Content-Disposition'] = f'attachment;filename={shared_document.title}.zip'
-    # response['Content-Length'] = os.path.getsize(ef.name)
-    # response['Content-Disposition'] = f"attachment; filename={shared_document_image.filename}"
-    return response
+    if not is_key_correct:
+        raise Http404
+    key_string = hashlib.sha256(encryption_key.encode())
+    byte_key = key_string.digest()
+
+    tmpdir = tempfile.mkdtemp()
+    zip_fn = os.path.join(tmpdir, f'{share_link.id}.zip')
+
+    with zipfile.ZipFile(zip_fn, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
+        for shared_document in share_link.documents.all():
+            for shared_document_image in shared_document.images.all():
+                f = shared_document_image.image
+                ef = EncryptedFile(f, key=byte_key)
+
+                zip_file.writestr(os.path.join(
+                    shared_document.title, shared_document_image.filename), ef.read())
+
+    zip_file = open(zip_fn, 'rb', )
+    return FileResponse(zip_file)
 
 
 class SharedDocumentDetail(APIView):

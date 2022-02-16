@@ -26,6 +26,9 @@ urlpatterns = [
 
     path('document/<int:shared_document_id>/images/<str:encryption_key>/download/',
          api_views.download_document_wise_images, name='download_document_wise_images'),
+    path('<str:share_link_id>/images/<str:encryption_key>/download/',
+         api_views.download_all_share_link_images, name='download_all_share_link_images'),
+
 
     # WORKING----------
     #     path('document-image/<uuid:document_image_id>/<str:encryption_key>/', views.view_shared_document_image,
