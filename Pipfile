@@ -11,6 +11,13 @@ djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
 pillow = "*"
 django-cleanup = "*"
+drfpasswordless = "*"
+shortuuid = "*"
+django-encrypted-files = "*"
+cryptography = "*"
+pyaes = "*"
+pbkdf2 = "*"
+passlib = "*"
 
 [dev-packages]
 autopep8 = "*"

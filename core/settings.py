@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-xluostfb663ferq70!)!sokad8#e)84$+06e)6fw$g33hj0+4h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -30,29 +30,50 @@ INSTALLED_APPS = [
 
     'django_cleanup.apps.CleanupConfig',
     'rest_framework',
+    'rest_framework.authtoken',
+    'drfpasswordless',
     'corsheaders',
-    'rest_framework_simplejwt.token_blacklist',
+    'encrypted_files',
+    # 'rest_framework_simplejwt.token_blacklist',
 
     'user',
-    'document',
+    'share_link',
 ]
 
 
 AUTH_USER_MODEL = 'user.User'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        #    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'UPDATE_LAST_LOGIN': False,
+PASSWORDLESS_AUTH = {
+
+    'PASSWORDLESS_AUTH_TYPES': ['EMAIL', 'MOBILE'],
+    'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': 'noreply@parichaya.com',
+    'PASSWORDLESS_MOBILE_NOREPLY_NUMBER': '+9779851228881',
+
+    'PASSWORDLESS_TEST_SUPPRESSION': True,
+
+    'PASSWORDLESS_USER_MARK_EMAIL_VERIFIED': True,
+
+    'PASSWORDLESS_USER_MARK_MOBILE_VERIFIED': True,
+
+    'PASSWORDLESS_AUTO_SEND_VERIFICATION_TOKEN': False,
+
 }
+
+
+# SIMPLE_JWT = {
+#     'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
+#     'ROTATE_REFRESH_TOKENS': True,
+#     'BLACKLIST_AFTER_ROTATION': True,
+#     'UPDATE_LAST_LOGIN': False,
+# }
 
 
 MIDDLEWARE = [
