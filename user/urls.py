@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 urlpatterns = [
-    path('', views.HelloAPI.as_view(), name='hello'),
+    # path('', views.HelloAPI.as_view(), name='hello'),
     path('user/create/', views.CreateUserView.as_view(), name='create'),
     path('me/', views.ManageUserView.as_view(), name='me'),
 

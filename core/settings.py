@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-xluostfb663ferq70!)!sokad8#e)84$+06e)6fw$g33hj0+4h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -33,10 +33,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drfpasswordless',
     'corsheaders',
+    'encrypted_files',
     # 'rest_framework_simplejwt.token_blacklist',
 
     'user',
-    'document',
     'share_link',
 ]
 
