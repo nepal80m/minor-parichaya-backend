@@ -8,7 +8,7 @@ from ..models import ShareLink, SharedDocument, SharedDocumentImage
 class SharedDocumentImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = SharedDocumentImage
-        fields = ('id', 'image',)
+        fields = ('id', )
         read_only_fields = ('id',)
 
 
