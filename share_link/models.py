@@ -9,7 +9,6 @@ from django.utils import timezone
 
 
 def now_plus_7():
-
     return timezone.now()+timezone.timedelta(days=7)
 
 

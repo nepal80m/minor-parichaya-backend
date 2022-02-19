@@ -1,5 +1,6 @@
 # from django.core.servers.basehttp import FileWrapper
 import io
+import json
 # import StringIO
 import tempfile
 import hmac
@@ -30,7 +31,7 @@ from rest_framework import authentication
 from rest_framework import renderers
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
-
+from django_celery_beat.models import PeriodicTask, CrontabSchedule, ClockedSchedule
 from share_link.models import ShareLink, SharedDocument, SharedDocumentImage
 from share_link.api.serializers import ShareLinkSerializer, SharedDocumentSerializer, SharedDocumentImageSerializer
 
@@ -42,7 +43,41 @@ class CreateShareLink(APIView):
         if serializer.is_valid():
             encryption_key = secrets.token_urlsafe(16)
             encryption_key_hash = pbkdf2_sha256.hash(encryption_key)
-            serializer.save(encryption_key_hash=encryption_key_hash)
+            share_link = serializer.save(
+                encryption_key_hash=encryption_key_hash)
+
+            # schedule, created = CrontabSchedule.objects.get_or_create(
+            #     hour=share_link.expiry_date.hour,
+            #     minute=share_link.expiry_date.minute,
+            #     day_of_week='*',
+            #     day_of_month='*',
+            #     month_of_year='*',
+            # )
+
+            schedule = ClockedSchedule.objects.create(
+                clocked_time=share_link.expiry_date)
+
+            task = PeriodicTask.objects.create(
+                task='share_link.tasks.delete_share_link',
+                clocked=schedule,
+                # crontab=schedule,
+                name=f'delete_share_link(${share_link.id})',
+                one_off=True,
+                # args=json.dumps([share_link.id]),
+                kwargs=json.dumps({
+                    'share_link_id': share_link.id,
+                    'scheduler_id': schedule.id,
+                    # 'task_id': task.id,
+                })
+
+            )
+            # task.kwargs = json.dumps({
+            #     'share_link_id': share_link.id,
+            #     'scheduler_id': schedule.id,
+            #     'task_id': task.id,
+            # })
+            # task.save()
+
             context = serializer.data
             context['encryption_key'] = encryption_key
             return Response(context, status=status.HTTP_201_CREATED)
