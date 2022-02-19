@@ -48,7 +48,7 @@ class ShareLinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ShareLink
-        fields = ('id', 'expiry_date', 'title', 'documents')
+        fields = ('id', 'title', 'created_on', 'expiry_date',  'documents')
         read_only_fields = ('id', 'documents',)
 
     # def create(self, validated_data):
