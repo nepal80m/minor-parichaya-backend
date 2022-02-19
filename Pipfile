@@ -18,6 +18,10 @@ cryptography = "*"
 pyaes = "*"
 pbkdf2 = "*"
 passlib = "*"
+celery = "*"
+django-celery-results = "*"
+redis = "*"
+django-celery-beat = "*"
 
 [dev-packages]
 autopep8 = "*"
