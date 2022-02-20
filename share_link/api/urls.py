@@ -11,7 +11,7 @@ urlpatterns = [
     path('', api_views.CreateShareLink.as_view(), name='create_share_link'),
 
 
-    path('<str:share_link_id>/<str:encryption_key>',
+    path('<str:share_link_id>/<str:encryption_key>/',
          api_views.ShareLinkDetail.as_view(), name='share_link_details'),
 
     path('<str:share_link_id>/<str:encryption_key>/add-document/',
