@@ -22,6 +22,8 @@ celery = "*"
 django-celery-results = "*"
 redis = "*"
 django-celery-beat = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 autopep8 = "*"
