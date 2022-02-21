@@ -80,6 +80,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# CORS_ALLOWED_ORIGINS = [
+#     "https://parichaya-alpha.web.app/",
+# ]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = [
+    # "DELETE",
+    "GET",
+    # "OPTIONS",
+    # "PATCH",
+    # "POST",
+    # "PUT",
+]
+
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
