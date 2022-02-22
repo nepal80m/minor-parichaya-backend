@@ -168,6 +168,7 @@ def view_shared_document_image(request, shared_document_image_id, encryption_key
     ef = EncryptedFile(f, key=byte_key)
 
     response = FileResponse(ef)
+    # response['Content-Type'] = ef.content_type
 
     return response
 
@@ -239,7 +240,7 @@ def download_all_share_link_images(request, share_link_id, encryption_key,):
     byte_key = key_string.digest()
 
     tmpdir = tempfile.mkdtemp()
-    zip_fn = os.path.join(tmpdir, f'{share_link.id}.zip')
+    zip_fn = os.path.join(tmpdir, f'Parichaya Documents.zip')
 
     with zipfile.ZipFile(zip_fn, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
         for shared_document in share_link.documents.all():
