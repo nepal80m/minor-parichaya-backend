@@ -22,4 +22,4 @@ urlpatterns = [
     path('backend-admin/', admin.site.urls),
     path('api/share-link/', include('share_link.api.urls', 'share_link_api')),
 ]
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
